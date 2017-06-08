@@ -1,110 +1,84 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<script src="angular-1.4.8.js"></script>
-<style>
-         table, th , td {
-            border: 1px solid grey;
-            border-collapse: collapse;
-            padding: 5px;
-         }
-         
-         table tr:nth-child(odd) {
-            background-color: #f2f2f2;
-         }
-         
-         table tr:nth-child(even) {
-            background-color: #ffffff;
-         }
-      </style>
-<head>
-<body ng-app="myAJSAssignment">
+	<head>
+		<meta charset="UTF-8">
+		<script src="angular-1.4.8.js"></script>
+		<script src="demo.js"></script>
+		<style>
+			table,
+			th,
+			td {
+				border: 1px solid grey;
+				border-collapse: collapse;
+				padding: 5px;
+			}
+			
+			table tr:nth-child(odd) {
+				background-color: #f2f2f2;
+			}
+			
+			table tr:nth-child(even) {
+				background-color: #ffffff;
+			}
+		</style>
+	</head>
+	<body ng-app="myAJSAssignment">
+		<form novalidate name="myForm" ng-controller="myFormCtrl">
+			<div>
+				<label>Name:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<input name="myName" ng-model="myName" ng-pattern="/^[a-zA-Z]*$/" required>
+				<span ng-show="myForm.myName.$touched && myForm.myName.$invalid">Please enter a valid name</span>
+			</div>
+			<br/>
+			<div>
+				<label>Subject 1:</label>
+				<input type="number" name="subject1" ng-model="subject1" min="0" max="100" ng-change="getAverage()" required>
+				<span ng-show="myForm.subject1.$touched && myForm.subject1.$invalid">Please enter a valid mark</span>
+			</div>
+			<br/>
+			<div>
+				<label>Subject 2:</label>
+				<input type="number" name="subject2" ng-model="subject2" min="0" max="100" ng-change="getAverage()" required>
+				<span ng-show="myForm.subject2.$touched && myForm.subject2.$invalid">Please enter a valid mark</span>
+			</div>
+			<br/>
+			<div>
+				<label>Subject 3:</label>
+				<input type="number" name="subject3" ng-model="subject3" min="0" max="100" ng-change="getAverage()" required>
+				<span ng-show="myForm.subject3.$touched && myForm.subject3.$invalid">Please enter a valid mark</span>
+			</div>
+			<br/>
+			<br/>
+			<div id="outputName">Name: {{myName}}</div>
+			<br/>
+			<div id="subject1Output">Subject 1: {{subject1}}</div>
+			<br/>
+			<div id="subject1Output">Subject 2: {{subject2}}</div>
+			<br/>
+			<div id="subject1Output">Subject 3: {{subject3}}</div>
+			<br/>
+			<div id="averageOutput">Average: {{avg}}</div>
+			<br/>
+			<button ng-click="myForm.$valid && buttonClick(); reset(myForm)">Save</button>
+			<br/>
+			<br/>
+			<table>
+				<tr>
+					<th>Name</th>
+					<th>Subject 1</th>
+					<th>Subject 2</th>
+					<th>Subject 3</th>
+					<th>Average</th>
+				</tr>
 
-<script>
-var module1= angular.module("myAJSAssignment",[]);
-module1.controller('myFormCtrl', ['$scope','myService', function($scope,myService) {
-			  $scope.avg = 0;
-              $scope.subject1 = 0;
-              $scope.subject2 = 0;
-              $scope.subject3 = 0;
-      $scope.getAverage = function() {
-                          var sum=$scope.subject1+$scope.subject2+$scope.subject3;
-                          $scope.avg=sum/3;      
-      };
-	   $scope.buttonClick = function() {  
-		if(typeof $scope.students=='undefined'){
-		$scope.students=[myService.saveData($scope)];
-		} else{
-		   $scope.students.push(myService.saveData($scope));
-		   }
-      };
-    }]);
-            
-            module1.service("myService", function(){
-                        this.saveData=function($scope){
-						  student ={ name: $scope.myName,						   
-						   subject1: $scope.subject1,
-						   subject2: $scope.subject2,
-						   subject3: $scope.subject3,
-						   average: $scope.avg
-						};
-                        return student;
-				}           
-            });
-            
-</script>
-            <form name="myForm" ng-controller="myFormCtrl">
-                        <div >
-                        <label>Name:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input name="myName" ng-model="myName" ng-pattern="/^[a-zA-Z]*$/" required>
-                        <span ng-show="myForm.myName.$touched && myForm.myName.$invalid">Please enter a valid name</span> 
-                        </div>
-                        <br/>
-                        <div>
-                        <label>Subject 1:</label>
-                        <input type="number" name="subject1" ng-model="subject1" min="0" max="100" ng-change="getAverage()" required>
-                        <span ng-show="myForm.subject1.$touched && myForm.subject1.$invalid">Please enter a valid mark</span> 
-                        </div><br/>
-                        <div>
-                        <label>Subject 2:</label>
-                        <input type="number" name="subject2" ng-model="subject2" min="0" max="100" ng-change="getAverage()" required>
-                        <span ng-show="myForm.subject2.$touched && myForm.subject2.$invalid">Please enter a valid mark</span> 
-                        </div><br/>
-                        <div>
-                        <label>Subject 3:</label>
-                        <input type="number" name="subject3" ng-model="subject3" min="0" max="100" ng-change="getAverage()" required>
-                        <span ng-show="myForm.subject3.$touched && myForm.subject3.$invalid">Please enter a valid mark</span> 
-                        </div>         
-<br/><br/>
-<div id="outputName">Name: {{myName}}</div>
-<br/>
-<div id="subject1Output">Subject 1: {{subject1}}</div>
-<br/>
-<div id="subject1Output" >Subject 2: {{subject2}}</div>
-<br/>
-<div id="subject1Output" >Subject 3: {{subject3}}</div>
-<br/>
-<div id="averageOutput">Average: {{avg}}</div>
-<br/>
-						<button ng-click="myForm.$valid && buttonClick()">Save</button><br/><br/>
-	<table>
-	   <tr>
-		  <th>Name</th>
-		  <th>Subject 1</th>
-		  <th>Subject 2</th>
-		  <th>Subject 3</th>
-		  <th>Average</th>
-	   </tr>
-	   
-	   <tr ng-repeat = "x in students">
-		  <td>{{ x.name }}</td>
-		  <td>{{ x.subject1 }}</td>
-		  <td>{{ x.subject2 }}</td>
-		  <td>{{ x.subject3 }}</td>
-		  <td>{{ x.average }}</td>
-	   </tr>
-	</table>
-</form>
-</body>
+				<tr ng-repeat="x in students">
+					<td>{{ x.name }}</td>
+					<td>{{ x.subject1 }}</td>
+					<td>{{ x.subject2 }}</td>
+					<td>{{ x.subject3 }}</td>
+					<td>{{ x.average }}</td>
+				</tr>
+			</table>
+		</form>
+	</body>
 </html>
